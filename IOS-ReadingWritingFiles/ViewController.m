@@ -10,6 +10,8 @@
 
 @interface ViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *textField;
+
 @property (weak, nonatomic) IBOutlet UITextView *resultField;
 
 @end
@@ -59,7 +61,6 @@
     
     NSLog (@"New directory is %@", newDir);
     NSString *f = [newDir path];
-    _resultField.text = f;
     
     //////////// Deleting a Directory
 
@@ -93,13 +94,13 @@
     
     filemgr = [NSFileManager defaultManager];
     
-    filelist = [filemgr contentsOfDirectoryAtPath: @"/tmp" error: nil];
+    filelist = [filemgr contentsOfDirectoryAtPath: currentpath error: nil];
     
     c = [filelist count] ;
     
     for (i = 0; i < c; i++)
         NSLog (@"%@", [filelist objectAtIndex: i]);
-    
+       
     //////////////// Getting the Attributes of a File or Directory
     
     NSLog(@"\n\nGetting the Attributes of a File or Directory\n");
@@ -108,12 +109,20 @@
     
     filemgr = [NSFileManager defaultManager];
     
-    attribs = [filemgr attributesOfItemAtPath: @"/tmp" error: NULL];
+    attribs = [filemgr attributesOfItemAtPath: currentpath error: NULL];
     
-    NSLog (@"Created on %@", [attribs objectForKey: NSFileCreationDate]);
-    NSLog (@"File type %@", [attribs objectForKey: NSFileType]);
-    NSLog (@"POSIX Permissions %@", [attribs objectForKey: NSFilePosixPermissions]);
-   
+    NSString *att1 = [attribs objectForKey: NSFileCreationDate];
+    NSLog (@"Created on %@", att1);
+    NSString *att2 = [attribs objectForKey: NSFileType];
+    NSLog (@"File type %@",  att2);
+    NSString *att3 = [attribs objectForKey: NSFilePosixPermissions];
+    NSLog (@"POSIX Permissions %@",  att3);
     
+    //_resultField.text = f;
+    //NSString *str = currentpath;
+    //str = [str stringByAppendingString:f];
+    NSString *str = [NSString stringWithFormat:
+                     @"CurrentPath : \n\t%@\nNewDir : \n\t%@\nCreated on : \n\t%@\nFile type : \n\t%@\nPOSIX Permissions  : \n\t%@", currentpath, f,att1, att2, att3];
+    _resultField.text = str;
 }
 @end
